@@ -21,7 +21,7 @@
 #include <algorithm>
 #include <cassert>
 #include <ostream>
-#include <iostream>
+
 #include "misc.h"
 #include "search.h"
 #include "thread.h"
@@ -39,11 +39,10 @@ namespace UCI {
 void on_clear_hash(const Option&) { Search::clear(); }
 void on_hash_size(const Option& o) { TT.resize(o); }
 void on_logger(const Option& o) { start_logger(o); }
-void on_threads(const Option&) { Threads.read_uci_options(); }
+void on_threads(const Option& o) { Threads.set(o); }
 void on_tb_path(const Option& o) { Tablebases::init(o); }
-void on_HashFile(const Option& o) { TT.set_hash_file_name(o); }
-void SaveHashtoFile(const Option&) { TT.save(); }
-void LoadHashfromFile(const Option&) { TT.load(); }
+
+
 /// Our case insensitive less() function as required by UCI protocol
 bool CaseInsensitiveLess::operator() (const string& s1, const string& s2) const {
 
@@ -63,16 +62,10 @@ void init(OptionsMap& o) {
   o["Threads"]               << Option(1, 1, 512, on_threads);
   o["Hash"]                  << Option(16, 1, MaxHashMB, on_hash_size);
   o["Clear Hash"]            << Option(on_clear_hash);
-  o["NeverClearHash"]        << Option(false);
-  o["HashFile"]              << Option("hash.hsh", on_HashFile);
-  o["SaveHashtoFile"]        << Option(SaveHashtoFile);
-  o["LoadHashfromFile"]      << Option(LoadHashfromFile);
   o["Ponder"]                << Option(false);
   o["MultiPV"]               << Option(1, 1, 500);
   o["Skill Level"]           << Option(20, 0, 20);
-  o["Move Overhead"]         << Option(30, 0, 5000);
-  o["Minimum Thinking Time"] << Option(20, 0, 5000);
-  o["Slow Mover"]            << Option(89, 10, 1000);
+  o["Move Overhead"]         << Option(60, 0, 5000);
   o["nodestime"]             << Option(0, 0, 10000);
   o["UCI_Chess960"]          << Option(false);
   o["SyzygyPath"]            << Option("<empty>", on_tb_path);
