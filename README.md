@@ -1,5 +1,5 @@
 # Stockfish-Master
-Fork of the official Stockfish Development version.
+The official Stockfish Development version with additional features
 
 ## Features
 - Persistent hash
